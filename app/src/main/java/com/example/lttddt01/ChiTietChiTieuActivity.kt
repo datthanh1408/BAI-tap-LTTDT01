@@ -3,6 +3,7 @@ package com.example.lttddt01
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 
@@ -28,7 +29,12 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
 
         khoiTaoGiaoDien_204()
         nhanDuLieuIntent_204()
-        hienThiDuLieu_204()
+
+        // Xử lý trường hợp thiếu hoặc sai dữ liệu theo yêu cầu Câu 2
+        val duLieuHopLe_204 = kiemTraDuLieuNhanDuoc_204()
+        if (duLieuHopLe_204) {
+            hienThiDuLieu_204()
+        }
     }
 
     // Khởi tạo các thành phần giao diện
@@ -56,6 +62,27 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
         soTien_204 = intent.getDoubleExtra("EXTRA_SO_TIEN_204", 0.0)
         ghiChu_204 = intent.getStringExtra("EXTRA_GHI_CHU_204") ?: ""
         daThanhToan_204 = intent.getBooleanExtra("EXTRA_DA_THANH_TOAN_204", true)
+    }
+
+    // Kiểm tra và xử lý khi thiếu hoặc sai dữ liệu (Câu 2)
+    private fun kiemTraDuLieuNhanDuoc_204(): Boolean {
+        if (tenKhoanChi_204.isBlank()) {
+            Toast.makeText(this, "Cảnh báo: Không nhận được tên khoản chi hợp lệ!", Toast.LENGTH_LONG).show()
+            tvTenKhoanChi_204.text = "Lỗi: Không nhận được tên khoản chi"
+            tvTenKhoanChi_204.setTextColor(getColor(R.color.status_unpaid))
+            btnChinhSua_204.isEnabled = false
+            return false
+        }
+
+        if (soTien_204 <= 0) {
+            Toast.makeText(this, "Cảnh báo: Số tiền chi tiêu không hợp lệ (nhỏ hơn hoặc bằng 0)!", Toast.LENGTH_LONG).show()
+            tvSoTien_204.text = "Lỗi: Số tiền không hợp lệ"
+            tvSoTien_204.setTextColor(getColor(R.color.status_unpaid))
+            btnChinhSua_204.isEnabled = false
+            return false
+        }
+
+        return true
     }
 
     // Hiển thị dữ liệu lên màn hình
