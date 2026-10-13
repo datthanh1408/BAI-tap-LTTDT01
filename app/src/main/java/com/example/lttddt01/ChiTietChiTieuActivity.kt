@@ -1,9 +1,12 @@
 package com.example.lttddt01
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 
@@ -23,6 +26,29 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
     private var ghiChu_204: String = ""
     private var daThanhToan_204: Boolean = true
 
+    // Activity Result API để nhận kết quả từ màn hình chỉnh sửa (Câu 3)
+    private val suaChiTieuLauncher_204 = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { ketQua_204 ->
+        if (ketQua_204.resultCode == Activity.RESULT_OK) {
+            val duLieuTraVe_204 = ketQua_204.data
+            if (duLieuTraVe_204 != null) {
+                // Cập nhật thông tin mới sau khi lưu thành công
+                tenKhoanChi_204 = duLieuTraVe_204.getStringExtra("EXTRA_TEN_KHOAN_CHI_204") ?: tenKhoanChi_204
+                soTien_204 = duLieuTraVe_204.getDoubleExtra("EXTRA_SO_TIEN_204", soTien_204)
+                ghiChu_204 = duLieuTraVe_204.getStringExtra("EXTRA_GHI_CHU_204") ?: ghiChu_204
+                daThanhToan_204 = duLieuTraVe_204.getBooleanExtra("EXTRA_DA_THANH_TOAN_204", daThanhToan_204)
+
+                // Cập nhật lại giao diện hiển thị
+                hienThiDuLieu_204()
+                Toast.makeText(this, "Đã lưu thông tin khoản chi mới!", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            // Khi người dùng bấm Hủy, giữ nguyên thông tin ban đầu
+            Toast.makeText(this, "Đã hủy chỉnh sửa. Giữ nguyên thông tin ban đầu!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chi_tiet_chi_tieu)
@@ -30,7 +56,6 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
         khoiTaoGiaoDien_204()
         nhanDuLieuIntent_204()
 
-        // Xử lý trường hợp thiếu hoặc sai dữ liệu theo yêu cầu Câu 2
         val duLieuHopLe_204 = kiemTraDuLieuNhanDuoc_204()
         if (duLieuHopLe_204) {
             hienThiDuLieu_204()
@@ -55,15 +80,15 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
             finish()
         }
 
-        // Nút mở màn hình chỉnh sửa và truyền dữ liệu hiện tại
+        // Nút mở màn hình chỉnh sửa bằng Activity Result API (Câu 3)
         btnChinhSua_204.setOnClickListener {
-            val intent_204 = android.content.Intent(this, ChinhSuaChiTieuActivity::class.java).apply {
+            val intent_204 = Intent(this, ChinhSuaChiTieuActivity::class.java).apply {
                 putExtra("EXTRA_TEN_KHOAN_CHI_204", tenKhoanChi_204)
                 putExtra("EXTRA_SO_TIEN_204", soTien_204)
                 putExtra("EXTRA_GHI_CHU_204", ghiChu_204)
                 putExtra("EXTRA_DA_THANH_TOAN_204", daThanhToan_204)
             }
-            startActivity(intent_204)
+            suaChiTieuLauncher_204.launch(intent_204)
         }
     }
 
