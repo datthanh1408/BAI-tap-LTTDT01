@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_light"
+    tools:context=".ChiTietChiTieuActivity">
+
+    <!-- Toolbar Tiêu đề -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarChiTiet_204"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_color"
+        app:titleTextColor="@color/white"
+        app:title="@string/tieu_de_action_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CHI TIẾT KHOẢN CHI"
+                android:textColor="@color/primary_dark"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Card hiển thị chi tiết -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                android:layout_marginBottom="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- Tên khoản chi -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tên khoản chi:"
+                        android:textColor="#757575"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tvTenKhoanChi_204"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Chưa có dữ liệu"
+                        android:textColor="@color/text_dark"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Số tiền -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Số tiền:"
+                        android:textColor="#757575"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tvSoTien_204"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0 VNĐ"
+                        android:textColor="@color/primary_color"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Ghi chú -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ghi chú:"
+                        android:textColor="#757575"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tvGhiChu_204"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Không có ghi chú"
+                        android:textColor="@color/text_dark"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Trạng thái thanh toán -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Trạng thái:"
+                        android:textColor="#757575"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tvTrangThai_204"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đã thanh toán"
+                        android:textColor="@color/status_paid"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:padding="4dp" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Nút Chỉnh sửa khoản chi (cho Câu 3) -->
+            <Button
+                android:id="@+id/btnChinhSua_204"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Chỉnh sửa khoản chi"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:backgroundTint="@color/accent_color"
+                android:textColor="@color/white"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Nút Quay lại màn hình chính -->
+            <Button
+                android:id="@+id/btnQuayLai_204"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Quay lại màn hình chính"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:backgroundTint="#757575"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
