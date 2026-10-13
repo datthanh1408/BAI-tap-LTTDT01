@@ -33,6 +33,13 @@ class ChinhSuaChiTieuActivity : AppCompatActivity() {
         khoiTaoGiaoDien_204()
         nhanVaHienThiDuLieuHienTai_204()
         caiDatSuKienNut_204()
+
+        // Xử lý khi nhấn nút Back vật lý/hệ thống cũng tính là Hủy (giữ nguyên dữ liệu)
+        onBackPressedDispatcher.addCallback(this, object : androidx.activity.OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                xuLyHuyChinhSua_204()
+            }
+        })
     }
 
     private fun khoiTaoGiaoDien_204() {
