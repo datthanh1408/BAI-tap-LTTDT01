@@ -42,6 +42,9 @@ class MainActivity : AppCompatActivity() {
         btnXemChiTiet_204 = findViewById(R.id.btnXemChiTiet_204)
         tvThongBao_204 = findViewById(R.id.tvThongBao_204)
 
+        // Khởi tạo dữ liệu ban đầu mang tính cá nhân (không trùng lặp với sinh viên khác)
+        khoiTaoDuLieuBanDau_204()
+
         // Xử lý sự kiện nút Thêm khoản chi
         btnThemKhoanChi_204.setOnClickListener {
             xuLyThemKhoanChi_204()
@@ -91,5 +94,18 @@ class MainActivity : AppCompatActivity() {
 
         // Sẽ được liên kết mở ChiTietChiTieuActivity ở câu 2
         Toast.makeText(this, "Đang mở màn hình chi tiết khoản chi...", Toast.LENGTH_SHORT).show()
+    }
+
+    // Khởi tạo dữ liệu ban đầu không trùng lặp (phù hợp yêu cầu đề bài)
+    private fun khoiTaoDuLieuBanDau_204() {
+        tenKhoanChi_204 = "Học phí môn Lập trình thiết bị di động"
+        soTien_204 = 1850000.0
+        ghiChu_204 = "Học phần thực hành Android cơ bản - 204"
+        coDuLieu_204 = true
+
+        edtTenKhoanChi_204.setText(tenKhoanChi_204)
+        edtSoTien_204.setText("1850000")
+        edtGhiChu_204.setText(ghiChu_204)
+        tvThongBao_204.text = "Dữ liệu ban đầu: $tenKhoanChi_204 - ${String.format("%,.0f", soTien_204)} VNĐ"
     }
 }
