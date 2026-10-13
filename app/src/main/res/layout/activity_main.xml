@@ -1,19 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_light"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!-- Toolbar Tiêu đề theo yêu cầu bắt buộc của đề bài -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_204"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_color"
+        app:titleTextColor="@color/white"
+        app:title="@string/tieu_de_action_bar" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NHẬP THÔNG TIN KHOẢN CHI"
+                android:textColor="@color/primary_dark"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Card chứa form nhập liệu -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                android:layout_marginBottom="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Ô nhập tên khoản chi -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tên khoản chi (*):"
+                        android:textColor="@color/text_dark"
+                        android:textStyle="bold"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/edtTenKhoanChi_204"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:hint="Ví dụ: Tiền mua sách giáo trình"
+                        android:inputType="textCapSentences"
+                        android:layout_marginBottom="14dp" />
+
+                    <!-- Ô nhập số tiền -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Số tiền (VNĐ) (*):"
+                        android:textColor="@color/text_dark"
+                        android:textStyle="bold"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/edtSoTien_204"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:hint="Ví dụ: 150000"
+                        android:inputType="numberDecimal"
+                        android:layout_marginBottom="14dp" />
+
+                    <!-- Ô nhập ghi chú -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ghi chú:"
+                        android:textColor="@color/text_dark"
+                        android:textStyle="bold"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/edtGhiChu_204"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:hint="Ví dụ: Chi phí học kỳ 1"
+                        android:inputType="textMultiLine"
+                        android:layout_marginBottom="10dp" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Nút Thêm khoản chi -->
+            <Button
+                android:id="@+id/btnThemKhoanChi_204"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="Thêm khoản chi"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:backgroundTint="@color/primary_color"
+                android:textColor="@color/white"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Nút Xem chi tiết khoản chi -->
+            <Button
+                android:id="@+id/btnXemChiTiet_204"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="Xem chi tiết khoản chi"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:backgroundTint="@color/accent_color"
+                android:textColor="@color/white"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Vùng hiển thị thông báo trạng thái -->
+            <TextView
+                android:id="@+id/tvThongBao_204"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Chưa có khoản chi nào được thêm."
+                android:textColor="#666666"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:padding="8dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
