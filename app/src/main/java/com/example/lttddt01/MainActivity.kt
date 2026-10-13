@@ -55,22 +55,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Hàm xử lý thêm khoản chi sử dụng lớp KhoanChi
+    // Hàm xử lý thêm khoản chi sử dụng lớp KhoanChi và hàm tiện ích kiểm tra (Câu 5)
     private fun xuLyThemKhoanChi_204() {
         val strTen_204 = edtTenKhoanChi_204.text.toString().trim()
         val strSoTien_204 = edtSoTien_204.text.toString().trim()
         val strGhiChu_204 = edtGhiChu_204.text.toString().trim()
 
-        if (strTen_204.isEmpty()) {
-            edtTenKhoanChi_204.error = "Vui lòng nhập tên khoản chi"
+        // Kiểm tra tên khoản chi: không để trống hoặc chỉ chứa khoảng trắng
+        if (!com.example.lttddt01.repository.KiemTraTienIch_204.laTenKhoanChiHopLe_204(strTen_204)) {
+            edtTenKhoanChi_204.error = "Tên khoản chi không được để trống hoặc chỉ chứa khoảng trắng"
             Toast.makeText(this, "Tên khoản chi không được để trống!", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val parsedSoTien_204 = strSoTien_204.toDoubleOrNull()
-        if (parsedSoTien_204 == null) {
-            edtSoTien_204.error = "Số tiền phải là số hợp lệ"
-            Toast.makeText(this, "Số tiền không hợp lệ!", Toast.LENGTH_SHORT).show()
+        // Kiểm tra số tiền: không cho phép số bằng 0, số âm hoặc định dạng sai
+        val (soTienHopLe_204, soTienChuan_204) = com.example.lttddt01.repository.KiemTraTienIch_204.chuyenDoiVaKiemTraSoTien_204(strSoTien_204)
+        if (!soTienHopLe_204) {
+            edtSoTien_204.error = "Số tiền phải là số lớn hơn 0"
+            Toast.makeText(this, "Số tiền không hợp lệ (phải lớn hơn 0)!", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -79,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         val doiTuongKhoanChi_204 = KhoanChi(
             maKhoanChi = maRandom_204,
             tenKhoanChi = strTen_204,
-            soTien = parsedSoTien_204,
+            soTien = soTienChuan_204,
             ghiChu = strGhiChu_204,
             daThanhToan = true
         )

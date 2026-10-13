@@ -84,23 +84,25 @@ class ChinhSuaChiTieuActivity : AppCompatActivity() {
         }
     }
 
-    // Xử lý lưu thay đổi và cập nhật đối tượng KhoanChi
+    // Xử lý lưu thay đổi và cập nhật đối tượng KhoanChi (Câu 5)
     private fun xuLyLuuThayDoi_204() {
         val tenMoi_204 = edtSuaTenKhoanChi_204.text.toString().trim()
         val strSoTienMoi_204 = edtSuaSoTien_204.text.toString().trim()
         val ghiChuMoi_204 = edtSuaGhiChu_204.text.toString().trim()
         val daThanhToanMoi_204 = cbSuaDaThanhToan_204.isChecked
 
-        if (tenMoi_204.isEmpty()) {
-            edtSuaTenKhoanChi_204.error = "Tên khoản chi không được để trống"
-            Toast.makeText(this, "Vui lòng nhập tên khoản chi!", Toast.LENGTH_SHORT).show()
+        // Kiểm tra tên khoản chi: không để trống hoặc chỉ chứa khoảng trắng
+        if (!com.example.lttddt01.repository.KiemTraTienIch_204.laTenKhoanChiHopLe_204(tenMoi_204)) {
+            edtSuaTenKhoanChi_204.error = "Tên khoản chi không được để trống hoặc chỉ chứa khoảng trắng"
+            Toast.makeText(this, "Tên khoản chi không được để trống!", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val soTienMoi_204 = strSoTienMoi_204.toDoubleOrNull()
-        if (soTienMoi_204 == null) {
-            edtSuaSoTien_204.error = "Số tiền phải là số hợp lệ"
-            Toast.makeText(this, "Số tiền không hợp lệ!", Toast.LENGTH_SHORT).show()
+        // Kiểm tra số tiền: không cho phép số bằng 0, số âm hoặc định dạng sai
+        val (soTienHopLe_204, soTienChuan_204) = com.example.lttddt01.repository.KiemTraTienIch_204.chuyenDoiVaKiemTraSoTien_204(strSoTienMoi_204)
+        if (!soTienHopLe_204) {
+            edtSuaSoTien_204.error = "Số tiền phải là số lớn hơn 0"
+            Toast.makeText(this, "Số tiền không hợp lệ (phải lớn hơn 0)!", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -108,7 +110,7 @@ class ChinhSuaChiTieuActivity : AppCompatActivity() {
         val khoanChiCapNhat_204 = KhoanChi(
             maKhoanChi = maKhoanChiHienTai,
             tenKhoanChi = tenMoi_204,
-            soTien = soTienMoi_204,
+            soTien = soTienChuan_204,
             ghiChu = ghiChuMoi_204,
             daThanhToan = daThanhToanMoi_204
         )
