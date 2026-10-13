@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_light"
+    tools:context=".ChinhSuaChiTieuActivity">
+
+    <!-- Toolbar Tiêu đề -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarChinhSua_204"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_color"
+        app:titleTextColor="@color/white"
+        app:title="@string/tieu_de_action_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CHỈNH SỬA KHOẢN CHI"
+                android:textColor="@color/primary_dark"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Card nhập liệu chỉnh sửa -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                android:layout_marginBottom="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Tên khoản chi -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tên khoản chi (*):"
+                        android:textColor="@color/text_dark"
+                        android:textStyle="bold"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/edtSuaTenKhoanChi_204"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:hint="Nhập tên khoản chi mới"
+                        android:inputType="textCapSentences"
+                        android:layout_marginBottom="14dp" />
+
+                    <!-- Số tiền -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Số tiền (VNĐ) (*):"
+                        android:textColor="@color/text_dark"
+                        android:textStyle="bold"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/edtSuaSoTien_204"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:hint="Nhập số tiền mới"
+                        android:inputType="numberDecimal"
+                        android:layout_marginBottom="14dp" />
+
+                    <!-- Ghi chú -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ghi chú:"
+                        android:textColor="@color/text_dark"
+                        android:textStyle="bold"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/edtSuaGhiChu_204"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:hint="Nhập ghi chú mới"
+                        android:inputType="textMultiLine"
+                        android:layout_marginBottom="14dp" />
+
+                    <!-- Trạng thái đã thanh toán -->
+                    <CheckBox
+                        android:id="@+id/cbSuaDaThanhToan_204"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Đã hoàn tất thanh toán"
+                        android:textSize="15sp"
+                        android:textColor="@color/text_dark" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Nút Lưu thay đổi -->
+            <Button
+                android:id="@+id/btnLuuThayDoi_204"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Lưu thay đổi"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:backgroundTint="@color/primary_color"
+                android:textColor="@color/white"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Nút Hủy chỉnh sửa -->
+            <Button
+                android:id="@+id/btnHuyThayDoi_204"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Hủy chỉnh sửa"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:backgroundTint="#757575"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

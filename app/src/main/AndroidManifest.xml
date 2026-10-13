@@ -25,6 +25,10 @@
         <activity
             android:name=".ChiTietChiTieuActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ChinhSuaChiTieuActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
