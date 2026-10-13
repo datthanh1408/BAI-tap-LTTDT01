@@ -131,11 +131,13 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
         tvGhiChu_204.text = if (kc_204.ghiChu.isNotEmpty()) kc_204.ghiChu else "(Không có ghi chú)"
 
         if (kc_204.daThanhToan) {
-            tvTrangThai_204.text = "Đã thanh toán"
+            tvTrangThai_204.text = "✔ ĐÃ THANH TOÁN"
             tvTrangThai_204.setTextColor(getColor(R.color.status_paid))
+            tvTrangThai_204.setBackgroundResource(R.drawable.bg_badge_paid)
         } else {
-            tvTrangThai_204.text = "Chưa thanh toán"
+            tvTrangThai_204.text = "⏳ CHƯA THANH TOÁN"
             tvTrangThai_204.setTextColor(getColor(R.color.status_unpaid))
+            tvTrangThai_204.setBackgroundResource(R.drawable.bg_badge_unpaid)
         }
     }
 }

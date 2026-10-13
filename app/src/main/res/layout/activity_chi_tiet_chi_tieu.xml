@@ -118,9 +118,9 @@
                         android:layout_height="wrap_content"
                         android:text="Đã thanh toán"
                         android:textColor="@color/status_paid"
-                        android:textSize="15sp"
+                        android:textSize="14sp"
                         android:textStyle="bold"
-                        android:padding="4dp" />
+                        android:padding="8dp" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
