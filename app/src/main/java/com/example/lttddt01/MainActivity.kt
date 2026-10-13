@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private var tenKhoanChi_204: String = ""
     private var soTien_204: Double = 0.0
     private var ghiChu_204: String = ""
+    private var daThanhToan_204: Boolean = true
     private var coDuLieu_204: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,15 +86,20 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "Thêm khoản chi thành công!", Toast.LENGTH_SHORT).show()
     }
 
-    // Hàm xử lý xem chi tiết khoản chi
+    // Hàm xử lý xem chi tiết khoản chi - Truyền dữ liệu bằng Intent (Câu 2)
     private fun xuLyXemChiTiet_204() {
         if (!coDuLieu_204) {
             Toast.makeText(this, "Vui lòng thêm khoản chi trước khi xem chi tiết!", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Sẽ được liên kết mở ChiTietChiTieuActivity ở câu 2
-        Toast.makeText(this, "Đang mở màn hình chi tiết khoản chi...", Toast.LENGTH_SHORT).show()
+        val intent_204 = Intent(this, ChiTietChiTieuActivity::class.java).apply {
+            putExtra("EXTRA_TEN_KHOAN_CHI_204", tenKhoanChi_204)
+            putExtra("EXTRA_SO_TIEN_204", soTien_204)
+            putExtra("EXTRA_GHI_CHU_204", ghiChu_204)
+            putExtra("EXTRA_DA_THANH_TOAN_204", daThanhToan_204)
+        }
+        startActivity(intent_204)
     }
 
     // Khởi tạo dữ liệu ban đầu không trùng lặp (phù hợp yêu cầu đề bài)
