@@ -54,6 +54,17 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
         btnQuayLai_204.setOnClickListener {
             finish()
         }
+
+        // Nút mở màn hình chỉnh sửa và truyền dữ liệu hiện tại
+        btnChinhSua_204.setOnClickListener {
+            val intent_204 = android.content.Intent(this, ChinhSuaChiTieuActivity::class.java).apply {
+                putExtra("EXTRA_TEN_KHOAN_CHI_204", tenKhoanChi_204)
+                putExtra("EXTRA_SO_TIEN_204", soTien_204)
+                putExtra("EXTRA_GHI_CHU_204", ghiChu_204)
+                putExtra("EXTRA_DA_THANH_TOAN_204", daThanhToan_204)
+            }
+            startActivity(intent_204)
+        }
     }
 
     // Nhận dữ liệu truyền từ Intent
