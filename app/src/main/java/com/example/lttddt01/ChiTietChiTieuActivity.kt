@@ -2,6 +2,7 @@ package com.example.lttddt01
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -9,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.example.lttddt01.repository.KhoanChi
 
 class ChiTietChiTieuActivity : AppCompatActivity() {
 
@@ -20,31 +22,28 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
     private lateinit var btnQuayLai_204: Button
     private lateinit var btnChinhSua_204: Button
 
-    // Các biến lưu dữ liệu
-    private var tenKhoanChi_204: String = ""
-    private var soTien_204: Double = 0.0
-    private var ghiChu_204: String = ""
-    private var daThanhToan_204: Boolean = true
+    // Sử dụng đối tượng KhoanChi để quản lý dữ liệu (Câu 4)
+    private var khoanChi_204: KhoanChi? = null
 
-    // Activity Result API để nhận kết quả từ màn hình chỉnh sửa (Câu 3)
+    // Activity Result API để nhận đối tượng KhoanChi đã chỉnh sửa (Câu 3 & 4)
     private val suaChiTieuLauncher_204 = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { ketQua_204 ->
         if (ketQua_204.resultCode == Activity.RESULT_OK) {
             val duLieuTraVe_204 = ketQua_204.data
-            if (duLieuTraVe_204 != null) {
-                // Cập nhật thông tin mới sau khi lưu thành công
-                tenKhoanChi_204 = duLieuTraVe_204.getStringExtra("EXTRA_TEN_KHOAN_CHI_204") ?: tenKhoanChi_204
-                soTien_204 = duLieuTraVe_204.getDoubleExtra("EXTRA_SO_TIEN_204", soTien_204)
-                ghiChu_204 = duLieuTraVe_204.getStringExtra("EXTRA_GHI_CHU_204") ?: ghiChu_204
-                daThanhToan_204 = duLieuTraVe_204.getBooleanExtra("EXTRA_DA_THANH_TOAN_204", daThanhToan_204)
+            val khoanChiDaSua_204 = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                duLieuTraVe_204?.getSerializableExtra("EXTRA_KHOAN_CHI_204", KhoanChi::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                duLieuTraVe_204?.getSerializableExtra("EXTRA_KHOAN_CHI_204") as? KhoanChi
+            }
 
-                // Cập nhật lại giao diện hiển thị
+            if (khoanChiDaSua_204 != null) {
+                khoanChi_204 = khoanChiDaSua_204
                 hienThiDuLieu_204()
-                Toast.makeText(this, "Đã lưu thông tin khoản chi mới!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Đã cập nhật thông tin khoản chi mới!", Toast.LENGTH_SHORT).show()
             }
         } else {
-            // Khi người dùng bấm Hủy, giữ nguyên thông tin ban đầu
             Toast.makeText(this, "Đã hủy chỉnh sửa. Giữ nguyên thông tin ban đầu!", Toast.LENGTH_SHORT).show()
         }
     }
@@ -80,37 +79,40 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
             finish()
         }
 
-        // Nút mở màn hình chỉnh sửa bằng Activity Result API (Câu 3)
+        // Nút mở màn hình chỉnh sửa truyền cả đối tượng KhoanChi
         btnChinhSua_204.setOnClickListener {
-            val intent_204 = Intent(this, ChinhSuaChiTieuActivity::class.java).apply {
-                putExtra("EXTRA_TEN_KHOAN_CHI_204", tenKhoanChi_204)
-                putExtra("EXTRA_SO_TIEN_204", soTien_204)
-                putExtra("EXTRA_GHI_CHU_204", ghiChu_204)
-                putExtra("EXTRA_DA_THANH_TOAN_204", daThanhToan_204)
+            val doiTuongGui_204 = khoanChi_204
+            if (doiTuongGui_204 != null) {
+                val intent_204 = Intent(this, ChinhSuaChiTieuActivity::class.java).apply {
+                    putExtra("EXTRA_KHOAN_CHI_204", doiTuongGui_204)
+                }
+                suaChiTieuLauncher_204.launch(intent_204)
             }
-            suaChiTieuLauncher_204.launch(intent_204)
         }
     }
 
-    // Nhận dữ liệu truyền từ Intent
+    // Nhận đối tượng KhoanChi từ Intent
     private fun nhanDuLieuIntent_204() {
-        tenKhoanChi_204 = intent.getStringExtra("EXTRA_TEN_KHOAN_CHI_204") ?: ""
-        soTien_204 = intent.getDoubleExtra("EXTRA_SO_TIEN_204", 0.0)
-        ghiChu_204 = intent.getStringExtra("EXTRA_GHI_CHU_204") ?: ""
-        daThanhToan_204 = intent.getBooleanExtra("EXTRA_DA_THANH_TOAN_204", true)
+        khoanChi_204 = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getSerializableExtra("EXTRA_KHOAN_CHI_204", KhoanChi::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getSerializableExtra("EXTRA_KHOAN_CHI_204") as? KhoanChi
+        }
     }
 
-    // Kiểm tra và xử lý khi thiếu hoặc sai dữ liệu (Câu 2)
+    // Kiểm tra tính hợp lệ của đối tượng KhoanChi
     private fun kiemTraDuLieuNhanDuoc_204(): Boolean {
-        if (tenKhoanChi_204.isBlank()) {
-            Toast.makeText(this, "Cảnh báo: Không nhận được tên khoản chi hợp lệ!", Toast.LENGTH_LONG).show()
+        val kc_204 = khoanChi_204
+        if (kc_204 == null || kc_204.tenKhoanChi.isBlank()) {
+            Toast.makeText(this, "Cảnh báo: Không nhận được thông tin khoản chi hợp lệ!", Toast.LENGTH_LONG).show()
             tvTenKhoanChi_204.text = "Lỗi: Không nhận được tên khoản chi"
             tvTenKhoanChi_204.setTextColor(getColor(R.color.status_unpaid))
             btnChinhSua_204.isEnabled = false
             return false
         }
 
-        if (soTien_204 <= 0) {
+        if (!kc_204.laSoTienHopLe()) {
             Toast.makeText(this, "Cảnh báo: Số tiền chi tiêu không hợp lệ (nhỏ hơn hoặc bằng 0)!", Toast.LENGTH_LONG).show()
             tvSoTien_204.text = "Lỗi: Số tiền không hợp lệ"
             tvSoTien_204.setTextColor(getColor(R.color.status_unpaid))
@@ -121,13 +123,14 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
         return true
     }
 
-    // Hiển thị dữ liệu lên màn hình
+    // Hiển thị dữ liệu từ đối tượng KhoanChi
     private fun hienThiDuLieu_204() {
-        tvTenKhoanChi_204.text = tenKhoanChi_204
-        tvSoTien_204.text = "${String.format("%,.0f", soTien_204)} VNĐ"
-        tvGhiChu_204.text = if (ghiChu_204.isNotEmpty()) ghiChu_204 else "(Không có ghi chú)"
+        val kc_204 = khoanChi_204 ?: return
+        tvTenKhoanChi_204.text = kc_204.tenKhoanChi
+        tvSoTien_204.text = "${String.format("%,.0f", kc_204.soTien)} VNĐ"
+        tvGhiChu_204.text = if (kc_204.ghiChu.isNotEmpty()) kc_204.ghiChu else "(Không có ghi chú)"
 
-        if (daThanhToan_204) {
+        if (kc_204.daThanhToan) {
             tvTrangThai_204.text = "Đã thanh toán"
             tvTrangThai_204.setTextColor(getColor(R.color.status_paid))
         } else {

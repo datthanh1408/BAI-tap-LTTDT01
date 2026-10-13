@@ -8,6 +8,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.example.lttddt01.repository.KhoanChi
+import com.example.lttddt01.repository.KhoanChiRepository
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,12 +21,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnXemChiTiet_204: Button
     private lateinit var tvThongBao_204: TextView
 
-    // Biến lưu thông tin khoản chi hiện tại
-    private var tenKhoanChi_204: String = ""
-    private var soTien_204: Double = 0.0
-    private var ghiChu_204: String = ""
-    private var daThanhToan_204: Boolean = true
-    private var coDuLieu_204: Boolean = false
+    // Sử dụng lớp KhoanChi để quản lý dữ liệu thay vì các biến rời rạc (Câu 4)
+    private var khoanChiHienTai_204: KhoanChi? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         btnXemChiTiet_204 = findViewById(R.id.btnXemChiTiet_204)
         tvThongBao_204 = findViewById(R.id.tvThongBao_204)
 
-        // Khởi tạo dữ liệu ban đầu mang tính cá nhân (không trùng lặp với sinh viên khác)
+        // Khởi tạo dữ liệu ban đầu mang tính cá nhân từ KhoanChiRepository
         khoiTaoDuLieuBanDau_204()
 
         // Xử lý sự kiện nút Thêm khoản chi
@@ -57,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Hàm xử lý thêm khoản chi
+    // Hàm xử lý thêm khoản chi sử dụng lớp KhoanChi
     private fun xuLyThemKhoanChi_204() {
         val strTen_204 = edtTenKhoanChi_204.text.toString().trim()
         val strSoTien_204 = edtSoTien_204.text.toString().trim()
@@ -70,48 +68,60 @@ class MainActivity : AppCompatActivity() {
         }
 
         val parsedSoTien_204 = strSoTien_204.toDoubleOrNull()
-        if (parsedSoTien_204 == null || parsedSoTien_204 <= 0) {
-            edtSoTien_204.error = "Số tiền phải là số lớn hơn 0"
+        if (parsedSoTien_204 == null) {
+            edtSoTien_204.error = "Số tiền phải là số hợp lệ"
             Toast.makeText(this, "Số tiền không hợp lệ!", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Lưu thông tin khoản chi hợp lệ
-        tenKhoanChi_204 = strTen_204
-        soTien_204 = parsedSoTien_204
-        ghiChu_204 = strGhiChu_204
-        coDuLieu_204 = true
+        // Khởi tạo đối tượng KhoanChi (Câu 4)
+        val maRandom_204 = "KC204_${System.currentTimeMillis() % 1000}"
+        val doiTuongKhoanChi_204 = KhoanChi(
+            maKhoanChi = maRandom_204,
+            tenKhoanChi = strTen_204,
+            soTien = parsedSoTien_204,
+            ghiChu = strGhiChu_204,
+            daThanhToan = true
+        )
 
-        tvThongBao_204.text = "Đã lưu: $tenKhoanChi_204 - ${String.format("%,.0f", soTien_204)} VNĐ"
+        // Kiểm tra tính hợp lệ của số tiền thông qua hàm laSoTienHopLe() của lớp KhoanChi
+        if (!doiTuongKhoanChi_204.laSoTienHopLe()) {
+            edtSoTien_204.error = "Số tiền phải lớn hơn 0"
+            Toast.makeText(this, "Số tiền chi tiêu phải lớn hơn 0!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Lưu đối tượng vào biến hiện tại và thêm vào repository
+        khoanChiHienTai_204 = doiTuongKhoanChi_204
+        KhoanChiRepository.themKhoanChi_204(doiTuongKhoanChi_204)
+
+        // Hiển thị thông tin bằng hàm layThongTin() của lớp KhoanChi
+        tvThongBao_204.text = doiTuongKhoanChi_204.layThongTin()
         Toast.makeText(this, "Thêm khoản chi thành công!", Toast.LENGTH_SHORT).show()
     }
 
-    // Hàm xử lý xem chi tiết khoản chi - Truyền dữ liệu bằng Intent (Câu 2)
+    // Hàm xử lý xem chi tiết khoản chi - Truyền đối tượng KhoanChi qua Intent
     private fun xuLyXemChiTiet_204() {
-        if (!coDuLieu_204) {
+        val khoanChi_204 = khoanChiHienTai_204
+        if (khoanChi_204 == null) {
             Toast.makeText(this, "Vui lòng thêm khoản chi trước khi xem chi tiết!", Toast.LENGTH_SHORT).show()
             return
         }
 
         val intent_204 = Intent(this, ChiTietChiTieuActivity::class.java).apply {
-            putExtra("EXTRA_TEN_KHOAN_CHI_204", tenKhoanChi_204)
-            putExtra("EXTRA_SO_TIEN_204", soTien_204)
-            putExtra("EXTRA_GHI_CHU_204", ghiChu_204)
-            putExtra("EXTRA_DA_THANH_TOAN_204", daThanhToan_204)
+            putExtra("EXTRA_KHOAN_CHI_204", khoanChi_204)
         }
         startActivity(intent_204)
     }
 
-    // Khởi tạo dữ liệu ban đầu không trùng lặp (phù hợp yêu cầu đề bài)
+    // Khởi tạo dữ liệu ban đầu từ KhoanChiRepository
     private fun khoiTaoDuLieuBanDau_204() {
-        tenKhoanChi_204 = "Học phí môn Lập trình thiết bị di động"
-        soTien_204 = 1850000.0
-        ghiChu_204 = "Học phần thực hành Android cơ bản - 204"
-        coDuLieu_204 = true
+        val khoanChiMau_204 = KhoanChiRepository.layKhoanChiHienTai_204()
+        khoanChiHienTai_204 = khoanChiMau_204
 
-        edtTenKhoanChi_204.setText(tenKhoanChi_204)
-        edtSoTien_204.setText("1850000")
-        edtGhiChu_204.setText(ghiChu_204)
-        tvThongBao_204.text = "Dữ liệu ban đầu: $tenKhoanChi_204 - ${String.format("%,.0f", soTien_204)} VNĐ"
+        edtTenKhoanChi_204.setText(khoanChiMau_204.tenKhoanChi)
+        edtSoTien_204.setText(String.format("%.0f", khoanChiMau_204.soTien))
+        edtGhiChu_204.setText(khoanChiMau_204.ghiChu)
+        tvThongBao_204.text = khoanChiMau_204.layThongTin()
     }
 }
